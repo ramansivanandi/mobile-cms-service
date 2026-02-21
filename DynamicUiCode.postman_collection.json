@@ -1,0 +1,1600 @@
+{
+  "info": {
+    "name": "DynamicUiCode - Complete API Collection",
+    "description": "Complete Postman collection for DynamicUiCode backend.\n\nEXECUTION ORDER (FK dependencies):\n1. Products\n2. Categories (requires productId)\n3. Pages (requires categoryId)\n4. Widgets (requires pageId, optional parentWidgetId)\n5. Widget Properties (requires widgetId)\n6. Widget Rules (requires widgetId)\n7. Widget Actions (requires widgetId)\n8. OnLoad Services (requires pageId)\n9. UI Config (read-only, full tree)\n10. Mock Web Services (no DB)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8081",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Products",
+      "description": "CRUD operations for Products. Execute FIRST (no FK dependencies).",
+      "item": [
+        {
+          "name": "1a. Create Product - Insurance",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Insurance\",\n  \"description\": \"Insurance Product Configuration\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "products"]
+            }
+          }
+        },
+        {
+          "name": "1b. Create Product - Banking",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Banking\",\n  \"description\": \"Banking Product Configuration\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "products"]
+            }
+          }
+        },
+        {
+          "name": "1c. Get All Products",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "products"]
+            }
+          }
+        },
+        {
+          "name": "1d. Get Product by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/products/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "products", "1"]
+            }
+          }
+        },
+        {
+          "name": "1e. Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Insurance Updated\",\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/products/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "products", "1"]
+            }
+          }
+        },
+        {
+          "name": "1f. Delete Product",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/products/2",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "products", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Categories",
+      "description": "CRUD operations for Categories. Requires productId from step 1.",
+      "item": [
+        {
+          "name": "2a. Create Category - Motor Insurance",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"name\": \"Motor Insurance\",\n  \"description\": \"Motor Insurance Category\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "categories"]
+            }
+          }
+        },
+        {
+          "name": "2b. Create Category - Home Insurance",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"name\": \"Home Insurance\",\n  \"description\": \"Home Insurance Category\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "categories"]
+            }
+          }
+        },
+        {
+          "name": "2c. Create Category - Savings Account",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 2,\n  \"name\": \"Savings Account\",\n  \"description\": \"Savings Account Category\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "categories"]
+            }
+          }
+        },
+        {
+          "name": "2d. Get All Categories",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "categories"]
+            }
+          }
+        },
+        {
+          "name": "2e. Get Categories by Product",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/categories/product/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "categories", "product", "1"]
+            }
+          }
+        },
+        {
+          "name": "2f. Get Category by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/categories/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "categories", "1"]
+            }
+          }
+        },
+        {
+          "name": "2g. Update Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Motor Insurance Updated\",\n  \"description\": \"Updated\",\n  \"productId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/categories/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "categories", "1"]
+            }
+          }
+        },
+        {
+          "name": "2h. Delete Category",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/categories/2",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "categories", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Pages",
+      "description": "CRUD operations for Pages. Requires categoryId from step 2.",
+      "item": [
+        {
+          "name": "3a. Create Page - Personal Info",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": 1,\n  \"title\": \"Personal Info\",\n  \"orderNo\": 1,\n  \"layoutType\": \"horizontal\",\n  \"columnsPerRow\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/pages",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "pages"]
+            }
+          }
+        },
+        {
+          "name": "3b. Create Page - Confirmation",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": 1,\n  \"title\": \"Confirmation\",\n  \"orderNo\": 2,\n  \"layoutType\": \"vertical\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/pages",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "pages"]
+            }
+          }
+        },
+        {
+          "name": "3c. Create Page - Property Details",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": 2,\n  \"title\": \"Property Details\",\n  \"orderNo\": 1,\n  \"layoutType\": \"horizontal\",\n  \"columnsPerRow\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/pages",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "pages"]
+            }
+          }
+        },
+        {
+          "name": "3d. Create Page - Account Setup",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": 3,\n  \"title\": \"Account Setup\",\n  \"orderNo\": 1,\n  \"layoutType\": \"vertical\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/pages",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "pages"]
+            }
+          }
+        },
+        {
+          "name": "3e. Get All Pages",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/pages",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "pages"]
+            }
+          }
+        },
+        {
+          "name": "3f. Get Pages by Category",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/pages?categoryId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "pages"],
+              "query": [
+                { "key": "categoryId", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "3g. Get Page by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/pages/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "pages", "1"]
+            }
+          }
+        },
+        {
+          "name": "3h. Update Page",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Personal Information\",\n  \"orderNo\": 1,\n  \"layoutType\": \"horizontal\",\n  \"columnsPerRow\": 3,\n  \"categoryId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/pages/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "pages", "1"]
+            }
+          }
+        },
+        {
+          "name": "3i. Delete Page",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/pages/2",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "pages", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Widgets",
+      "description": "CRUD operations for Widgets. Requires pageId from step 3. parentWidgetId is optional (for nested widgets).",
+      "item": [
+        {
+          "name": "4a. Create Widget - Age Textbox",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 1,\n  \"type\": \"textbox\",\n  \"name\": \"age\",\n  \"label\": \"Age\",\n  \"orderNo\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets"]
+            }
+          }
+        },
+        {
+          "name": "4b. Create Widget - Car Brand Dropdown",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 1,\n  \"type\": \"dropdown\",\n  \"name\": \"carBrand\",\n  \"label\": \"Car Brand\",\n  \"orderNo\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets"]
+            }
+          }
+        },
+        {
+          "name": "4c. Create Widget - Submit Button",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 1,\n  \"type\": \"button\",\n  \"name\": \"submit\",\n  \"label\": \"Submit\",\n  \"orderNo\": 3\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets"]
+            }
+          }
+        },
+        {
+          "name": "4d. Create Widget - Terms Checkbox",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 1,\n  \"type\": \"checkbox\",\n  \"name\": \"termsAccepted\",\n  \"label\": \"Accept Terms and Conditions\",\n  \"orderNo\": 4\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets"]
+            }
+          }
+        },
+        {
+          "name": "4e. Create Widget - Confirm Title Label (page 2)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 2,\n  \"type\": \"label\",\n  \"name\": \"confirmTitle\",\n  \"label\": \"Application Submitted\",\n  \"orderNo\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets"]
+            }
+          }
+        },
+        {
+          "name": "4f. Create Widget - Ref Number Label (page 2)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 2,\n  \"type\": \"label\",\n  \"name\": \"refNo\",\n  \"label\": \"Reference Number\",\n  \"orderNo\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets"]
+            }
+          }
+        },
+        {
+          "name": "4g. Create Widget - Property Card (page 3, container)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 3,\n  \"type\": \"card\",\n  \"name\": \"propertyCard\",\n  \"label\": \"Property Information\",\n  \"orderNo\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets"]
+            }
+          }
+        },
+        {
+          "name": "4h. Create Widget - Address Textbox (nested in card 7)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 3,\n  \"parentWidgetId\": 7,\n  \"type\": \"textbox\",\n  \"name\": \"address\",\n  \"label\": \"Property Address\",\n  \"orderNo\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets"]
+            }
+          }
+        },
+        {
+          "name": "4i. Create Widget - Property Type Dropdown (nested in card 7)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 3,\n  \"parentWidgetId\": 7,\n  \"type\": \"dropdown\",\n  \"name\": \"propertyType\",\n  \"label\": \"Property Type\",\n  \"orderNo\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets"]
+            }
+          }
+        },
+        {
+          "name": "4j. Create Widget - Account Name (page 4)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 4,\n  \"type\": \"textbox\",\n  \"name\": \"accountName\",\n  \"label\": \"Account Holder Name\",\n  \"orderNo\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets"]
+            }
+          }
+        },
+        {
+          "name": "4k. Create Widget - Account Type Dropdown (page 4)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 4,\n  \"type\": \"dropdown\",\n  \"name\": \"accountType\",\n  \"label\": \"Account Type\",\n  \"orderNo\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets"]
+            }
+          }
+        },
+        {
+          "name": "4l. Get Widgets by Page",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets/page/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets", "page", "1"]
+            }
+          }
+        },
+        {
+          "name": "4m. Get Widget by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets", "1"]
+            }
+          }
+        },
+        {
+          "name": "4n. Update Widget",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 1,\n  \"type\": \"textbox\",\n  \"name\": \"age\",\n  \"label\": \"Your Age\",\n  \"orderNo\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets", "1"]
+            }
+          }
+        },
+        {
+          "name": "4o. Delete Widget",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widgets/6",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widgets", "6"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Widget Properties",
+      "description": "CRUD operations for Widget Properties. Requires widgetId from step 4.",
+      "item": [
+        {
+          "name": "5a. Create Property - age placeholder",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 1,\n  \"propKey\": \"placeholder\",\n  \"propValue\": \"Enter age\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties"]
+            }
+          }
+        },
+        {
+          "name": "5b. Create Property - age required",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 1,\n  \"propKey\": \"required\",\n  \"propValue\": \"true\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties"]
+            }
+          }
+        },
+        {
+          "name": "5c. Create Property - age min",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 1,\n  \"propKey\": \"min\",\n  \"propValue\": \"1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties"]
+            }
+          }
+        },
+        {
+          "name": "5d. Create Property - age max",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 1,\n  \"propKey\": \"max\",\n  \"propValue\": \"100\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties"]
+            }
+          }
+        },
+        {
+          "name": "5e. Create Property - age width",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 1,\n  \"propKey\": \"width\",\n  \"propValue\": \"50\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties"]
+            }
+          }
+        },
+        {
+          "name": "5f. Batch Create - carBrand dropdown props",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  { \"widgetId\": 2, \"propKey\": \"placeholder\", \"propValue\": \"Select car brand\" },\n  { \"widgetId\": 2, \"propKey\": \"required\", \"propValue\": \"true\" },\n  { \"widgetId\": 2, \"propKey\": \"multiple\", \"propValue\": \"false\" },\n  { \"widgetId\": 2, \"propKey\": \"width\", \"propValue\": \"50\" }\n]"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties/batch",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties", "batch"]
+            }
+          }
+        },
+        {
+          "name": "5g. Batch Create - submit button props",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  { \"widgetId\": 3, \"propKey\": \"variant\", \"propValue\": \"primary\" },\n  { \"widgetId\": 3, \"propKey\": \"size\", \"propValue\": \"large\" }\n]"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties/batch",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties", "batch"]
+            }
+          }
+        },
+        {
+          "name": "5h. Batch Create - terms checkbox props",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  { \"widgetId\": 4, \"propKey\": \"required\", \"propValue\": \"true\" },\n  { \"widgetId\": 4, \"propKey\": \"showTermsLink\", \"propValue\": \"true\" },\n  { \"widgetId\": 4, \"propKey\": \"termsLinkText\", \"propValue\": \"Terms and Conditions\" }\n]"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties/batch",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties", "batch"]
+            }
+          }
+        },
+        {
+          "name": "5i. Batch Create - address props (nested)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  { \"widgetId\": 8, \"propKey\": \"placeholder\", \"propValue\": \"Enter property address\" },\n  { \"widgetId\": 8, \"propKey\": \"required\", \"propValue\": \"true\" }\n]"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties/batch",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties", "batch"]
+            }
+          }
+        },
+        {
+          "name": "5j. Batch Create - propertyType dropdown props",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  { \"widgetId\": 9, \"propKey\": \"placeholder\", \"propValue\": \"Select property type\" },\n  { \"widgetId\": 9, \"propKey\": \"required\", \"propValue\": \"true\" }\n]"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties/batch",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties", "batch"]
+            }
+          }
+        },
+        {
+          "name": "5k. Batch Create - accountName props",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  { \"widgetId\": 10, \"propKey\": \"placeholder\", \"propValue\": \"Enter full name\" },\n  { \"widgetId\": 10, \"propKey\": \"required\", \"propValue\": \"true\" }\n]"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties/batch",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties", "batch"]
+            }
+          }
+        },
+        {
+          "name": "5l. Batch Create - accountType dropdown props",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  { \"widgetId\": 11, \"propKey\": \"placeholder\", \"propValue\": \"Select account type\" },\n  { \"widgetId\": 11, \"propKey\": \"required\", \"propValue\": \"true\" }\n]"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties/batch",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties", "batch"]
+            }
+          }
+        },
+        {
+          "name": "5m. Get Properties by Widget",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties/widget/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties", "widget", "1"]
+            }
+          }
+        },
+        {
+          "name": "5n. Update Property",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"propKey\": \"placeholder\",\n  \"propValue\": \"Enter your age\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties", "1"]
+            }
+          }
+        },
+        {
+          "name": "5o. Delete Property",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-properties/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-properties", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Widget Rules",
+      "description": "CRUD operations for Widget Rules. Requires widgetId from step 4.",
+      "item": [
+        {
+          "name": "6a. Create Rule - age validation",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 1,\n  \"ruleType\": \"validation\",\n  \"ruleExpression\": \"value >= 18\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-rules"]
+            }
+          }
+        },
+        {
+          "name": "6b. Create Rule - dropdown visibility",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 2,\n  \"ruleType\": \"visibility\",\n  \"ruleExpression\": \"age >= 18\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-rules"]
+            }
+          }
+        },
+        {
+          "name": "6c. Create Rule - submit button enabled",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 3,\n  \"ruleType\": \"enabled\",\n  \"ruleExpression\": \"termsAccepted == true\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-rules"]
+            }
+          }
+        },
+        {
+          "name": "6d. Create Rule - address required",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 8,\n  \"ruleType\": \"required\",\n  \"ruleExpression\": \"true\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-rules"]
+            }
+          }
+        },
+        {
+          "name": "6e. Create Rule - propertyType required",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 9,\n  \"ruleType\": \"required\",\n  \"ruleExpression\": \"true\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-rules"]
+            }
+          }
+        },
+        {
+          "name": "6f. Get Rules by Widget",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-rules/widget/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-rules", "widget", "1"]
+            }
+          }
+        },
+        {
+          "name": "6g. Update Rule",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ruleType\": \"validation\",\n  \"ruleExpression\": \"value >= 21\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-rules/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-rules", "1"]
+            }
+          }
+        },
+        {
+          "name": "6h. Delete Rule",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-rules/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-rules", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Widget Actions",
+      "description": "CRUD operations for Widget Actions. Requires widgetId from step 4.",
+      "item": [
+        {
+          "name": "7a. Create Action - Submit API Call",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 3,\n  \"actionName\": \"submit\",\n  \"actionType\": \"api_call\",\n  \"triggerEvent\": \"click\",\n  \"httpMethod\": \"POST\",\n  \"endpointUrl\": \"/api/insurance/submit\",\n  \"payloadTemplate\": \"{\\\"age\\\": \\\"{{age}}\\\", \\\"carBrand\\\": \\\"{{carBrand}}\\\"}\",\n  \"payloadType\": \"dynamic\",\n  \"headers\": \"{\\\"Content-Type\\\": \\\"application/json\\\"}\",\n  \"successHandler\": \"navigateToPage:2:store:submitResponse\",\n  \"errorHandler\": \"showMessage:Error occurred while submitting\",\n  \"timeoutMs\": 30000,\n  \"orderNo\": 1,\n  \"isEnabled\": \"Y\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-actions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-actions"]
+            }
+          }
+        },
+        {
+          "name": "7b. Create Action - Data Binding",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 2,\n  \"actionName\": \"loadOptions\",\n  \"actionType\": \"data_binding\",\n  \"triggerEvent\": \"focus\",\n  \"successHandler\": \"updateDropdown:carBrand:carBrands\",\n  \"orderNo\": 1,\n  \"isEnabled\": \"Y\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-actions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-actions"]
+            }
+          }
+        },
+        {
+          "name": "7c. Get Actions by Widget",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-actions/widget/3",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-actions", "widget", "3"]
+            }
+          }
+        },
+        {
+          "name": "7d. Update Action",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 3,\n  \"actionName\": \"submit\",\n  \"actionType\": \"api_call\",\n  \"triggerEvent\": \"click\",\n  \"httpMethod\": \"POST\",\n  \"endpointUrl\": \"/api/insurance/submit\",\n  \"payloadTemplate\": \"{\\\"age\\\": \\\"{{age}}\\\", \\\"carBrand\\\": \\\"{{carBrand}}\\\", \\\"terms\\\": \\\"{{termsAccepted}}\\\"}\",\n  \"payloadType\": \"dynamic\",\n  \"headers\": \"{\\\"Content-Type\\\": \\\"application/json\\\"}\",\n  \"successHandler\": \"navigateToPage:2:store:submitResponse\",\n  \"errorHandler\": \"showMessage:Submission failed\",\n  \"timeoutMs\": 15000,\n  \"orderNo\": 1,\n  \"isEnabled\": \"Y\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-actions/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-actions", "1"]
+            }
+          }
+        },
+        {
+          "name": "7e. Delete Action",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/widget-actions/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "widget-actions", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. OnLoad Services",
+      "description": "CRUD operations for OnLoad Services. Requires pageId from step 3.",
+      "item": [
+        {
+          "name": "8a. Create OnLoad - User Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 1,\n  \"serviceId\": \"USER_DATA_SERVICE\",\n  \"api\": \"/api/user/profile\",\n  \"httpMethod\": \"GET\",\n  \"headers\": \"{\\\"Content-Type\\\": \\\"application/json\\\", \\\"Authorization\\\": \\\"Bearer {{$token}}\\\"}\",\n  \"serviceIdentifier\": \"userProfile\",\n  \"onSuccess\": \"setFormData:userProfile\",\n  \"onFailure\": \"showMessage:Failed to load user data\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/onload-services",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "onload-services"]
+            }
+          }
+        },
+        {
+          "name": "8b. Create OnLoad - Car Brands",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 1,\n  \"serviceId\": \"CAR_BRANDS_SERVICE\",\n  \"api\": \"/api/cars/brands\",\n  \"httpMethod\": \"GET\",\n  \"headers\": \"{\\\"Content-Type\\\": \\\"application/json\\\"}\",\n  \"serviceIdentifier\": \"carBrands\",\n  \"onSuccess\": \"updateDropdown:carBrand\",\n  \"onFailure\": \"showMessage:Failed to load car brands\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/onload-services",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "onload-services"]
+            }
+          }
+        },
+        {
+          "name": "8c. Create OnLoad - Init Form",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 1,\n  \"serviceId\": \"INIT_FORM_SERVICE\",\n  \"api\": \"/api/forms/initialize\",\n  \"httpMethod\": \"POST\",\n  \"payload\": \"{\\\"formType\\\": \\\"insurance\\\", \\\"userId\\\": \\\"{{$userId}}\\\"}\",\n  \"headers\": \"{\\\"Content-Type\\\": \\\"application/json\\\", \\\"Authorization\\\": \\\"Bearer {{$token}}\\\"}\",\n  \"serviceIdentifier\": \"formInit\",\n  \"onSuccess\": \"setFormData:formData\",\n  \"onFailure\": \"showMessage:Failed to initialize form\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/onload-services",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "onload-services"]
+            }
+          }
+        },
+        {
+          "name": "8d. Create OnLoad - Config Settings",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 1,\n  \"serviceId\": \"CONFIG_SERVICE\",\n  \"api\": \"/api/config/settings?category=motor\",\n  \"httpMethod\": \"GET\",\n  \"headers\": \"{\\\"Content-Type\\\": \\\"application/json\\\"}\",\n  \"serviceIdentifier\": \"appConfig\",\n  \"onSuccess\": \"setGlobalConfig:config\",\n  \"onFailure\": \"showMessage:Failed to load configuration\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/onload-services",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "onload-services"]
+            }
+          }
+        },
+        {
+          "name": "8e. Create OnLoad - Validation Rules",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageId\": 1,\n  \"serviceId\": \"VALIDATION_RULES_SERVICE\",\n  \"api\": \"/api/validation/rules\",\n  \"httpMethod\": \"GET\",\n  \"headers\": \"{\\\"Content-Type\\\": \\\"application/json\\\"}\",\n  \"serviceIdentifier\": \"validationRules\",\n  \"onSuccess\": \"setValidationRules:rules\",\n  \"onFailure\": \"showMessage:Failed to load validation rules\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/onload-services",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "onload-services"]
+            }
+          }
+        },
+        {
+          "name": "8f. Get OnLoad Services by Page",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/onload-services/page/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "onload-services", "page", "1"]
+            }
+          }
+        },
+        {
+          "name": "8g. Get OnLoad Service by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/onload-services/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "onload-services", "1"]
+            }
+          }
+        },
+        {
+          "name": "8h. Update OnLoad Service",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serviceId\": \"USER_DATA_SERVICE\",\n  \"api\": \"/api/user/profile\",\n  \"httpMethod\": \"GET\",\n  \"headers\": \"{\\\"Content-Type\\\": \\\"application/json\\\", \\\"Authorization\\\": \\\"Bearer token\\\"}\",\n  \"serviceIdentifier\": \"userProfile\",\n  \"onSuccess\": \"setFormData:userProfile\",\n  \"onFailure\": \"showMessage:User data load failed\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/onload-services/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "onload-services", "1"]
+            }
+          }
+        },
+        {
+          "name": "8i. Delete OnLoad Service",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/onload-services/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "onload-services", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. UI Config (Read-Only)",
+      "description": "Fetches full UI configuration tree for a product. Read-only aggregation endpoint.",
+      "item": [
+        {
+          "name": "9a. Get Full UI Config - Product 1",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/ui-config/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ui-config", "1"]
+            }
+          }
+        },
+        {
+          "name": "9b. Get Full UI Config - Product 2",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/ui-config/2",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ui-config", "2"]
+            }
+          }
+        },
+        {
+          "name": "9c. POST Insurance (Mock)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"test\": \"data\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/ui-config/post/ins",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ui-config", "post", "ins"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Mock Web Services",
+      "description": "Standalone mock services (no DB). Used by OnLoad services and Widget Actions.",
+      "item": [
+        {
+          "name": "10a. Health Check",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            }
+          }
+        },
+        {
+          "name": "10b. Get User Profile",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/user/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "profile"]
+            }
+          }
+        },
+        {
+          "name": "10c. Get Car Brands",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/cars/brands",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cars", "brands"]
+            }
+          }
+        },
+        {
+          "name": "10d. Get Car Brands (filtered)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/cars/brands?category=luxury",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cars", "brands"],
+              "query": [
+                { "key": "category", "value": "luxury" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "10e. Initialize Form",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"formType\": \"insurance\",\n  \"userId\": \"12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/forms/initialize",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "forms", "initialize"]
+            }
+          }
+        },
+        {
+          "name": "10f. Get Config Settings",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/config/settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "config", "settings"]
+            }
+          }
+        },
+        {
+          "name": "10g. Get Config Settings (motor)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/config/settings?category=motor",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "config", "settings"],
+              "query": [
+                { "key": "category", "value": "motor" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "10h. Get Validation Rules",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/validation/rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "validation", "rules"]
+            }
+          }
+        },
+        {
+          "name": "10i. Get Users List",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/users/list",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "list"]
+            }
+          }
+        },
+        {
+          "name": "10j. Get Profile",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/profile/get",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "profile", "get"]
+            }
+          }
+        },
+        {
+          "name": "10k. Submit Insurance Form",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"age\": 25,\n  \"carBrand\": \"Toyota\",\n  \"termsAccepted\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/insurance/submit",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "insurance", "submit"]
+            }
+          }
+        },
+        {
+          "name": "10l. Submit Insurance - Missing Fields (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/insurance/submit",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "insurance", "submit"]
+            }
+          }
+        },
+        {
+          "name": "10m. Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/user/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "profile"]
+            }
+          }
+        },
+        {
+          "name": "10n. Delete Item (success)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/items/123",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "items", "123"]
+            }
+          }
+        },
+        {
+          "name": "10o. Delete Item (not found)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/items/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "items", "999"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "11. Data Sources",
+      "description": "UI Data Sources for dropdown widgets (static/dynamic options).",
+      "item": [
+        {
+          "name": "11a. Create DataSource - Property Type (static)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 9,\n  \"sourceType\": \"static\",\n  \"sourceValue\": \"[{\\\"id\\\":\\\"house\\\",\\\"name\\\":\\\"House\\\"},{\\\"id\\\":\\\"apartment\\\",\\\"name\\\":\\\"Apartment\\\"},{\\\"id\\\":\\\"condo\\\",\\\"name\\\":\\\"Condo\\\"}]\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/data-sources",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "data-sources"]
+            }
+          }
+        },
+        {
+          "name": "11b. Create DataSource - Account Type (static)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"widgetId\": 11,\n  \"sourceType\": \"static\",\n  \"sourceValue\": \"[{\\\"id\\\":\\\"savings\\\",\\\"name\\\":\\\"Savings\\\"},{\\\"id\\\":\\\"checking\\\",\\\"name\\\":\\\"Checking\\\"},{\\\"id\\\":\\\"fixed\\\",\\\"name\\\":\\\"Fixed Deposit\\\"}]\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/data-sources",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "data-sources"]
+            }
+          }
+        },
+        {
+          "name": "11c. Get DataSources by Widget",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/data-sources/widget/9",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "data-sources", "widget", "9"]
+            }
+          }
+        },
+        {
+          "name": "11d. Get DataSource by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/data-sources/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "data-sources", "1"]
+            }
+          }
+        },
+        {
+          "name": "11e. Update DataSource",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sourceType\": \"static\",\n  \"sourceValue\": \"[{\\\"id\\\":\\\"house\\\",\\\"name\\\":\\\"House\\\"},{\\\"id\\\":\\\"apartment\\\",\\\"name\\\":\\\"Apartment\\\"},{\\\"id\\\":\\\"condo\\\",\\\"name\\\":\\\"Condo\\\"},{\\\"id\\\":\\\"villa\\\",\\\"name\\\":\\\"Villa\\\"}]\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/data-sources/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "data-sources", "1"]
+            }
+          }
+        },
+        {
+          "name": "11f. Delete DataSource",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/builder/data-sources/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "builder", "data-sources", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
