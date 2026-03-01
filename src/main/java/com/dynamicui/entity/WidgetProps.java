@@ -27,4 +27,7 @@ public class WidgetProps {
 
     @Column("prop_value")
     private String propValue;
+
+    @Column("custclass")
+    private String custclass;
 }

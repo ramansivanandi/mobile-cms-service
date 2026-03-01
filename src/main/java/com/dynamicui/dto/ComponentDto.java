@@ -1,6 +1,5 @@
 package com.dynamicui.dto;
 
-import com.dynamicui.entity.WidgetPseudoStyle;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +23,7 @@ public class ComponentDto {
     private List<RuleDto> rules;
     private Object dataSource;
     private List<ActionDto> actions;
-    private List<ComponentDto> children; // For nested components (e.g., widgets inside a card)
-    private List<WidgetPseudoStyle> pseudoStyles;
+    private List<ComponentDto> children;
+    // Keyed by CSS selector (e.g. ":hover"), value is a map of CSS property → value
+    private Map<String, Map<String, String>> pseudoStyles;
 }

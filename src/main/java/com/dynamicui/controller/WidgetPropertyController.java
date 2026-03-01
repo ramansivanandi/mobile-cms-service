@@ -47,6 +47,7 @@ public class WidgetPropertyController {
                 .flatMap(existing -> {
                     existing.setPropKey(property.getPropKey());
                     existing.setPropValue(property.getPropValue());
+                    existing.setCustclass(property.getCustclass());
                     return propertyRepository.save(existing);
                 })
                 .map(updated -> ResponseEntity.ok(ApiResponse.success(updated)))

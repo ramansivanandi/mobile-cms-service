@@ -62,4 +62,24 @@ public class WidgetPseudoStyleService {
                         ErrorCode.PSEUDO_STYLE_NOT_FOUND.message())))
                 .flatMap(repository::delete);
     }
+
+    // DELETE
+    public Mono<Void> deleteByPropKey(Long widgetId, Long propId, String propKey) {
+
+        return repository.findByPropIdAndWidgetIdAndPropKey(propId, widgetId, propKey)
+                .switchIfEmpty(Mono.error(new BusinessException(
+                        ErrorCode.PSEUDO_STYLE_NOT_FOUND.code(),
+                        ErrorCode.PSEUDO_STYLE_NOT_FOUND.message())))
+                .flatMap(repository::delete);
+    }
+
+    public Mono<Void> deleteBySelector(String widgetId, String propId, String selector) {
+
+        return repository.findByPropIdAndWidgetIdAndSelector(propId, widgetId, selector)
+                .switchIfEmpty(Mono.error(new BusinessException(
+                        ErrorCode.PSEUDO_STYLE_NOT_FOUND.code(),
+                        ErrorCode.PSEUDO_STYLE_NOT_FOUND.message())))
+                .flatMap(repository::delete);
+    }
+
 }

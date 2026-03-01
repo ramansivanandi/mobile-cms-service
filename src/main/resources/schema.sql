@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS widget_props (
     widget_id BIGINT NOT NULL,
     prop_key VARCHAR(100) NOT NULL,
     prop_value TEXT,
+    custclass TEXT,
     CONSTRAINT fk_props_widget FOREIGN KEY (widget_id) REFERENCES widget(widget_id) ON DELETE CASCADE
 );
 
@@ -174,4 +175,9 @@ BEGIN
   IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='on_load_service' AND column_name='on_load_service_id' AND is_identity='YES') THEN
     ALTER TABLE on_load_service ALTER COLUMN on_load_service_id SET DEFAULT nextval('seq_on_load_service_id');
   END IF;
+ IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='widget_props' AND column_name='custclass') THEN
+  alter table  widget_props add custclass TEXT ;
+  END IF;
+
+
 END $$;

@@ -16,89 +16,125 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/widgets")
+@RequestMapping("/api/widgets")
 @RequiredArgsConstructor
 @Slf4j
 public class WidgetPseudoStyleController {
 
-    private final WidgetPseudoStyleService service;
+        private final WidgetPseudoStyleService service;
 
-    // GET /widgets/{id}/pseudo-styles
-    @GetMapping("/{id}/pseudo-styles")
-    public Mono<ApiResponse<List<WidgetPseudoStyle>>> getPseudoStyles(
-            @PathVariable Long id) {
+        // GET /widgets/{id}/pseudo-styles
+        @GetMapping("/{id}/pseudo-styles")
+        public Mono<ApiResponse<List<WidgetPseudoStyle>>> getPseudoStyles(
+                        @PathVariable Long id) {
 
-        return service.getByWidgetId(id)
-                .collectList()
-                .flatMap(list -> {
+                return service.getByWidgetId(id)
+                                .collectList()
+                                .flatMap(list -> {
 
-                    if (list.isEmpty()) {
-                        return Mono.just(
-                                new ApiResponse<>(
-                                        new ApiResponse.Status("404001",
-                                                "No pseudo styles found for widgetId: " + id),
-                                        null));
-                    }
+                                        if (list.isEmpty()) {
+                                                return Mono.just(
+                                                                new ApiResponse<>(
+                                                                                new ApiResponse.Status("404001",
+                                                                                                "No pseudo styles found for widgetId: "
+                                                                                                                + id),
+                                                                                null));
+                                        }
 
-                    return Mono.just(
-                            new ApiResponse<>(
-                                    new ApiResponse.Status("000000", "SUCCESS"),
-                                    list));
-                });
+                                        return Mono.just(
+                                                        new ApiResponse<>(
+                                                                        new ApiResponse.Status("000000", "SUCCESS"),
+                                                                        list));
+                                });
 
-    }
+        }
 
-    // POST /widgets/{id}/pseudo-styles
-    @PostMapping("/{id}/pseudo-styles")
-    public Mono<ApiResponse<WidgetPseudoStyle>> createPseudoStyle(
-            @PathVariable Long id,
-            @RequestBody PseudoStyleDto request) {
+        // POST /widgets/{id}/pseudo-styles
+        @PostMapping("/{id}/pseudo-styles")
+        public Mono<ApiResponse<WidgetPseudoStyle>> createPseudoStyle(
+                        @PathVariable Long id,
+                        @RequestBody PseudoStyleDto request) {
 
-        WidgetPseudoStyle style = new WidgetPseudoStyle();
-        style.setWidgetId(id);
-        style.setSelector(request.getSelector());
-        style.setPropKey(request.getPropKey());
-        style.setPropValue(request.getPropValue());
-        style.setRemarks(request.getRemarks());
-        log.info("createPse id:{}, setSelector{}", id, request.getSelector());
-        return service.create(style)
-                .map(saved -> new ApiResponse<>(
-                        new ApiResponse.Status("000000", "SUCCESS"),
-                        saved))
-                .switchIfEmpty(
-                        Mono.just(ApiResponse.error("10001", "Unable to create pseudo style")));
+                WidgetPseudoStyle style = new WidgetPseudoStyle();
+                style.setWidgetId(id);
+                style.setSelector(request.getSelector());
+                style.setPropKey(request.getPropKey());
+                style.setPropValue(request.getPropValue());
+                style.setRemarks(request.getRemarks());
+                log.info("createPse id:{}, setSelector{}", id, request.getSelector());
+                return service.create(style)
+                                .map(saved -> new ApiResponse<>(
+                                                new ApiResponse.Status("000000", "SUCCESS"),
+                                                saved))
+                                .switchIfEmpty(
+                                                Mono.just(ApiResponse.error("10001", "Unable to create pseudo style")));
 
-    }
+        }
 
-    // ================= UPDATE =================
-    @PutMapping("/{widgetId}/pseudo-styles/{propId}")
-    public Mono<ApiResponse<WidgetPseudoStyle>> updatePseudoStyle(
-            @PathVariable Long widgetId,
-            @PathVariable Long propId,
-            @RequestBody UpdatePseudoStyleRequest request) {
+        // ================= UPDATE =================
+        @PutMapping("/{widgetId}/pseudo-styles/{propId}")
+        public Mono<ApiResponse<WidgetPseudoStyle>> updatePseudoStyle(
+                        @PathVariable Long widgetId,
+                        @PathVariable Long propId,
+                        @RequestBody UpdatePseudoStyleRequest request) {
 
-        return service.update(widgetId,
-                propId,
-                request.getSelector(),
-                request.getPropKey(),
-                request.getPropValue(),
-                request.getRemarks())
-                .map(updated -> new ApiResponse<>(
-                        new ApiResponse.Status("000000", "UPDATED SUCCESSFULLY"),
-                        updated));
-    }
+                return service.update(widgetId,
+                                propId,
+                                request.getSelector(),
+                                request.getPropKey(),
+                                request.getPropValue(),
+                                request.getRemarks())
+                                .map(updated -> new ApiResponse<>(
+                                                new ApiResponse.Status("000000", "UPDATED SUCCESSFULLY"),
+                                                updated));
+        }
 
-    // ================= DELETE =================
-    @DeleteMapping("/{widgetId}/pseudo-styles/{propId}")
-    public Mono<ApiResponse<String>> deletePseudoStyle(
-            @PathVariable Long widgetId,
-            @PathVariable Long propId) {
+        // ================= DELETE =================
+        @DeleteMapping("/{widgetId}/pseudo-styles/{propId}")
+        public Mono<ApiResponse<String>> deletePseudoStyle(
+                        @PathVariable Long widgetId,
+                        @PathVariable Long propId) {
 
-        return service.delete(widgetId, propId)
-                .then(Mono.just(
-                        new ApiResponse<>(
-                                new ApiResponse.Status("000000", "DELETED SUCCESSFULLY"),
-                                "Deleted")));
-    }
+                return service.delete(widgetId, propId)
+                                .then(Mono.just(
+                                                new ApiResponse<>(
+                                                                new ApiResponse.Status("000000",
+                                                                                "DELETED SUCCESSFULLY"),
+                                                                "Deleted")));
+        }
+
+        // ================= DELETE =================
+        @DeleteMapping("/{widgetId}/pseudo-styles/{propId}/{propKey}")
+        public Mono<ApiResponse<String>> deletePseudoStyleByPropKey(
+                        @PathVariable Long widgetId,
+                        @PathVariable Long propId,
+                        @PathVariable String propKey) {
+
+                log.info("propKey{},widgetId{},propId{}", propKey, widgetId, propId);
+
+                return service.deleteByPropKey(widgetId, propId, propKey)
+                                .then(Mono.just(
+                                                new ApiResponse<>(
+                                                                new ApiResponse.Status("000000",
+                                                                                "DELETED SUCCESSFULLY"),
+                                                                "Deleted")));
+        }
+
+        // ================= DELETE =================
+        @DeleteMapping("/pseudo-styles")
+        public Mono<ApiResponse<String>> deletePseudoStyleBySelector(
+                        @RequestParam String widgetId,
+                        @RequestParam String propId,
+                        @RequestParam String selector) {
+
+                log.info("selector{},widgetId{},propId{}", selector, widgetId, propId);
+
+                return service.deleteBySelector(widgetId, propId, selector)
+                                .then(Mono.just(
+                                                new ApiResponse<>(
+                                                                new ApiResponse.Status("000000",
+                                                                                "DELETED SUCCESSFULLY"),
+                                                                "Deleted")));
+        }
 
 }

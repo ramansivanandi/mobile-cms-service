@@ -19,7 +19,8 @@ public class CorsConfig {
                 "http://localhost:4200",
                 "http://localhost:2401",
                 "http://localhost:4202",
-                "http://localhost:3000"));
+                "http://localhost:3000",
+                "http://localhost:4201"));
 
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");

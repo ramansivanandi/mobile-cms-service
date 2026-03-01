@@ -175,11 +175,22 @@ public class UiConfigService {
                 .map(this::buildActionDto)
                 .collectList();
 
-        // Mono<ApiResponse<List<WidgetPseudoStyle>>>
-        // widgetPseudoStyleList=getPseudoStyles(widget.getWidgetId());
-        Mono<List<WidgetPseudoStyle>> widgetPseudoStyleList = pseudoStyleRepository.findByWidgetId(widget.getWidgetId())
-                .collectList();
-        return Mono.zip(propertiesMono, rulesMono, dataSourceMono, actionsMono, widgetPseudoStyleList)
+        // Group pseudo-style rows into Map<selector, Map<propKey, propValue>>
+        // e.g. { ":hover": { "display": "flex", "background-color": "rgba(0,0,0,0.6)" } }
+        Mono<Map<String, Map<String, String>>> pseudoStylesMono = pseudoStyleRepository
+                .findByWidgetId(widget.getWidgetId())
+                .collectList()
+                .map(styles -> {
+                    Map<String, Map<String, String>> grouped = new LinkedHashMap<>();
+                    for (WidgetPseudoStyle s : styles) {
+                        if (s.getSelector() != null && s.getPropKey() != null) {
+                            grouped.computeIfAbsent(s.getSelector(), k -> new LinkedHashMap<>())
+                                   .put(s.getPropKey(), s.getPropValue() != null ? s.getPropValue() : "");
+                        }
+                    }
+                    return grouped;
+                });
+        return Mono.zip(propertiesMono, rulesMono, dataSourceMono, actionsMono, pseudoStylesMono)
                 .map(tuple -> ComponentDto.builder()
                         .type(widget.getType() != null ? widget.getType() : "")
                         .label(widget.getLabel())
@@ -189,8 +200,7 @@ public class UiConfigService {
                         .rules(tuple.getT2().isEmpty() ? null : tuple.getT2())
                         .dataSource(tuple.getT3().orElse(null))
                         .actions(tuple.getT4().isEmpty() ? null : tuple.getT4())
-                        .pseudoStyles(
-                                tuple.getT5().isEmpty() ? null : tuple.getT5())
+                        .pseudoStyles(tuple.getT5().isEmpty() ? null : tuple.getT5())
                         .build());
     }
 

@@ -188,8 +188,15 @@ public class ImageController {
                 return imageService.getWidgetImageByRole(widgetId, role)
                                 .map(image -> ResponseEntity.ok(ApiResponse.success(image)))
                                 .onErrorResume(BusinessException.class,
-                                                e -> Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                                                .body(ApiResponse.error(e.getCode(), e.getMessage()))))
+                                                e -> {
+                                                        // IMG-400-05 = invalid role value → 400 Bad Request
+                                                        // IMG-404-xx = not found → 404 Not Found
+                                                        HttpStatus status = e.getCode().startsWith("IMG-400")
+                                                                        ? HttpStatus.BAD_REQUEST
+                                                                        : HttpStatus.NOT_FOUND;
+                                                        return Mono.just(ResponseEntity.status(status)
+                                                                        .body(ApiResponse.error(e.getCode(), e.getMessage())));
+                                                })
                                 .onErrorResume(e -> {
                                         log.error("Error fetching {} image for widget {}: {}", role, widgetId,
                                                         e.getMessage(), e);

@@ -691,3 +691,67 @@ All API responses follow this standard format:
 For interactive API documentation, visit:
 - **Swagger UI**: http://localhost:8081/swagger-ui.html
 - **OpenAPI JSON**: http://localhost:8081/api-docs
+
+# :hover                                                                                                                                                                                                                                                   
+  curl -s -X POST "http://34.18.92.50:8084/api/widgets/1/pseudo-styles" \                                                                                                                                                                                          
+    -H "Content-Type: application/json" \                                                                                                                                                                                                                    
+    -d '{                                                                                                                                                                                                                                                    
+      "selector": ":hover",
+      "propKey": "display",                                                                                                                                                                                                                                  
+      "propValue": "flex",                                                                                                                                                                                                                                   
+      "remarks": "hover display"                                                                                                                                                                                                                             
+    }'
+
+  curl -s -X POST "http://34.18.92.50:8084/api/widgets/1/pseudo-styles" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "selector": ":hover",
+      "propKey": "flex-direction",
+      "propValue": "column",
+      "remarks": "hover flex direction"
+    }'
+
+  curl -s -X POST "http://34.18.92.50:8084/api/widgets/1/pseudo-styles" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "selector": ":hover",
+      "propKey": "max-height",
+      "propValue": "300px",
+      "remarks": "hover max height"
+    }'
+
+  curl -s -X POST "http://34.18.92.50:8084/api/widgets/1/pseudo-styles" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "selector": ":hover",
+      "propKey": "overflow",
+      "propValue": "hidden",
+      "remarks": "hover overflow"
+    }'
+
+  curl -s -X POST "http://34.18.92.50:8084/api/widgets/1/pseudo-styles" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "selector": ":hover",
+      "propKey": "padding",
+      "propValue": "1rem",
+      "remarks": "hover padding"
+    }'
+
+  curl -s -X POST "http://34.18.92.50:8084/api/widgets/1/pseudo-styles" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "selector": ":hover",
+      "propKey": "background-color",
+      "propValue": "rgba(0,0,0,0.6)",
+      "remarks": "hover background"
+    }'
+
+  curl -s -X POST "http://34.18.92.50:8084/api/widgets/1/pseudo-styles" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "selector": ":hover",
+      "propKey": "transition",
+      "propValue": "all 0.3s ease",
+      "remarks": "hover transition"
+    }'

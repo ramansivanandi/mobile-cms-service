@@ -16,4 +16,8 @@ public interface WidgetPseudoStyleRepository
 
     Mono<WidgetPseudoStyle> findByPropIdAndWidgetId(Long propId, Long widgetId);
 
+    Mono<WidgetPseudoStyle> findByPropIdAndWidgetIdAndPropKey(Long propId, Long widgetId, String propKey);
+
+    Mono<WidgetPseudoStyle> findByPropIdAndWidgetIdAndSelector(String propId, String widgetId, String selector);
+
 }
