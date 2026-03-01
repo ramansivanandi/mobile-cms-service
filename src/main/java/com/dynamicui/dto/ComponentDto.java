@@ -19,7 +19,7 @@ public class ComponentDto {
     private String label;
     private String name;
     private Integer order;
-    private Map<String, String> properties;
+    private Map<String, Object> properties;
     private List<RuleDto> rules;
     private Object dataSource;
     private List<ActionDto> actions;

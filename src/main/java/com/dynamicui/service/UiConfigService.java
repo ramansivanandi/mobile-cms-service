@@ -132,14 +132,20 @@ public class UiConfigService {
     }
 
     private Mono<ComponentDto> buildComponentDto(Widget widget) {
-        Mono<Map<String, String>> propertiesMono = propertyRepository.findByWidgetId(widget.getWidgetId())
+        Mono<Map<String, Object>> propertiesMono = propertyRepository.findByWidgetId(widget.getWidgetId())
                 .filter(prop -> prop.getPropKey() != null)
                 .collectList()
                 .map(props -> props.stream()
                         .collect(Collectors.toMap(
                                 WidgetProps::getPropKey,
-                                prop -> prop.getPropValue() != null ? prop.getPropValue() : "",
-                                (v1, v2) -> v1,
+                                prop -> {
+                                    // Combine your values into a sub-structure
+                                    Map<String, String> details = new HashMap<>();
+                                    details.put("value", prop.getPropValue() != null ? prop.getPropValue() : "");
+                                    details.put("custclass", prop.getCustclass() != null ? prop.getCustclass() : "");
+                                    return details;
+                                },
+                                (v1, v2) -> v1, // Keep first on duplicate key
                                 LinkedHashMap::new)));
 
         Mono<List<RuleDto>> rulesMono = rulesRepository.findByWidgetId(widget.getWidgetId())
@@ -176,7 +182,8 @@ public class UiConfigService {
                 .collectList();
 
         // Group pseudo-style rows into Map<selector, Map<propKey, propValue>>
-        // e.g. { ":hover": { "display": "flex", "background-color": "rgba(0,0,0,0.6)" } }
+        // e.g. { ":hover": { "display": "flex", "background-color": "rgba(0,0,0,0.6)" }
+        // }
         Mono<Map<String, Map<String, String>>> pseudoStylesMono = pseudoStyleRepository
                 .findByWidgetId(widget.getWidgetId())
                 .collectList()
@@ -185,7 +192,7 @@ public class UiConfigService {
                     for (WidgetPseudoStyle s : styles) {
                         if (s.getSelector() != null && s.getPropKey() != null) {
                             grouped.computeIfAbsent(s.getSelector(), k -> new LinkedHashMap<>())
-                                   .put(s.getPropKey(), s.getPropValue() != null ? s.getPropValue() : "");
+                                    .put(s.getPropKey(), s.getPropValue() != null ? s.getPropValue() : "");
                         }
                     }
                     return grouped;
