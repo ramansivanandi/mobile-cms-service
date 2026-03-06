@@ -28,13 +28,9 @@ public class UiConfigController {
     private final UiConfigService uiConfigService;
 
     @GetMapping("/{productId}")
-    @Operation(
-            summary = "Get UI Configuration by Product ID",
-            description = "Retrieves the complete UI configuration structure for a given product, including categories, pages, components, properties, rules, and data sources."
-    )
+    @Operation(summary = "Get UI Configuration by Product ID", description = "Retrieves the complete UI configuration structure for a given product, including categories, pages, components, properties, rules, and data sources.")
     public Mono<ResponseEntity<UiConfigResponse>> getUiConfig(
-            @Parameter(description = "Product ID", required = true, example = "1")
-            @PathVariable Long productId) {
+            @Parameter(description = "Product ID", required = true, example = "1") @PathVariable Long productId) {
 
         log.info("Received request for UI configuration with productId: {}", productId);
 
@@ -45,7 +41,8 @@ public class UiConfigController {
                     return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
                 })
                 .onErrorResume(Exception.class, e -> {
-                    log.error("Unexpected error retrieving UI configuration for productId {}: {}", productId, e.getMessage(), e);
+                    log.error("Unexpected error retrieving UI configuration for productId {}: {}", productId,
+                            e.getMessage(), e);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
                 });
     }

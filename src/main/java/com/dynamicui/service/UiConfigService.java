@@ -135,18 +135,25 @@ public class UiConfigService {
         Mono<Map<String, Object>> propertiesMono = propertyRepository.findByWidgetId(widget.getWidgetId())
                 .filter(prop -> prop.getPropKey() != null)
                 .collectList()
-                .map(props -> props.stream()
-                        .collect(Collectors.toMap(
-                                WidgetProps::getPropKey,
-                                prop -> {
-                                    // Combine your values into a sub-structure
-                                    Map<String, String> details = new HashMap<>();
-                                    details.put("value", prop.getPropValue() != null ? prop.getPropValue() : "");
-                                    details.put("custclass", prop.getCustclass() != null ? prop.getCustclass() : "");
-                                    return details;
-                                },
-                                (v1, v2) -> v1, // Keep first on duplicate key
-                                LinkedHashMap::new)));
+                .map(props -> {
+                    Map<String, Object> result = new LinkedHashMap<>();
+                    for (WidgetProps prop : props) {
+                        String selector = prop.getCustclass();
+                        if (selector != null && !selector.trim().isEmpty()) {
+                            // CSS-selector-grouped: { ".card-body": { "required": "test" } }
+                            @SuppressWarnings("unchecked")
+                            Map<String, String> selectorMap = (Map<String, String>)
+                                    result.computeIfAbsent(selector.trim(), k -> new LinkedHashMap<String, String>());
+                            selectorMap.put(prop.getPropKey(),
+                                    prop.getPropValue() != null ? prop.getPropValue() : "");
+                        } else {
+                            // Flat property: { "placeholder": "Enter text" }
+                            result.putIfAbsent(prop.getPropKey(),
+                                    prop.getPropValue() != null ? prop.getPropValue() : "");
+                        }
+                    }
+                    return result;
+                });
 
         Mono<List<RuleDto>> rulesMono = rulesRepository.findByWidgetId(widget.getWidgetId())
                 .filter(rule -> rule.getRuleType() != null)
